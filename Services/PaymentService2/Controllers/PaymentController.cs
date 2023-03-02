@@ -21,7 +21,7 @@ namespace PaymentService.Controllers
         [HttpGet]
         public async Task<string> Test()
         {
-            return "test";
+            return "payment controller 2";
         }
 
         [HttpGet("/test")]
