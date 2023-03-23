@@ -4,6 +4,9 @@ using AutoMapper;
 using PaymentService.Models;
 using PaymentService.DTOs.Test;
 using PaymentService.Services.Test;
+using RabbitMQ.Client.Events;
+using RabbitMQ.Client;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +28,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<DataContext>();
-    context.Database.Migrate();
+    //context.Database.Migrate();
 }
 
     // Configure the HTTP request pipeline.
@@ -40,5 +43,29 @@ using (var scope = app.Services.CreateScope())
 app.UseAuthorization();
 
 app.MapControllers();
+
+IConnectionFactory factory = new ConnectionFactory { HostName = "localhost", Port = 5672, UserName = "myuser", Password = "mypassword" };
+using (IConnection connection = factory.CreateConnection())
+{
+    IModel channel = connection.CreateModel();
+    channel.ExchangeDeclare("test", ExchangeType.Topic, true);
+
+    channel.QueueDeclare("hello", true, false,false, null);
+
+    channel.QueueBind("hello", "test", "demo");
+
+    var consumer = new EventingBasicConsumer(channel);
+    consumer.Received += received;
+    channel.BasicConsume("hello", true, consumer);
+};
+
+
+static void received(object? sender, BasicDeliverEventArgs e)
+{
+    byte[] body = e.Body.ToArray();
+    string message = Encoding.UTF8.GetString(body);
+
+}
+
 
 app.Run();

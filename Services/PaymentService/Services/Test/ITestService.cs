@@ -5,6 +5,5 @@ namespace PaymentService.Services.Test
     public interface ITestService
     {
         public Task<List<GetTestDTO>> getAllTests();
-
     }
 }

@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Connections;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PaymentService.DTOs.Test;
 using PaymentService.Services.Test;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System.Text;
+using System.Threading.Channels;
 
 namespace PaymentService.Controllers
 {
@@ -16,7 +21,37 @@ namespace PaymentService.Controllers
         public PaymentController(ITestService testService)
         {
             _testService = testService;
+
+            var factory = new ConnectionFactory { HostName = "localhost", Port = 5672, UserName = "myuser", Password = "mypassword" };
+            using var connection = factory.CreateConnection();
+            using var channel = connection.CreateModel();
+            channel.ExchangeDeclare("test", ExchangeType.Topic, true);
+
+            channel.QueueDeclare(queue: "hello",
+                                 durable: true,
+                                 exclusive: false,
+                                 autoDelete: false,
+                                 arguments: null);
+
+            channel.QueueBind("hello", ExchangeType.Topic, "demo");
+
+            var consumer = new EventingBasicConsumer(channel);
+            consumer.Received += received;
+            channel.BasicConsume("hello", true, consumer);
+            
+
         }
+
+        private static void received(object? sender, BasicDeliverEventArgs e)
+        {   
+            byte[] body = e.Body.ToArray();
+            string message = Encoding.UTF8.GetString(body);
+            
+        }
+
+
+
+
 
         [HttpGet]
         public async Task<string> Test()
