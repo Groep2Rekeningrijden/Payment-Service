@@ -4,6 +4,8 @@ using PaymentService.Models;
 using AutoMapper;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using MassTransit;
+using Rekeningrijden.RabbitMq;
 
 namespace PaymentService.Services.Test
 {
@@ -35,7 +37,10 @@ namespace PaymentService.Services.Test
             return response;
         }
 
-
+        public async Task<string> rabbitMqTest(TestRabbitMqClass rabbit)
+        {
+            return rabbit.Id + " " + rabbit.Name;
+        }
 
 
 

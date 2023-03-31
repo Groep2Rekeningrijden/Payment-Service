@@ -20,38 +20,8 @@ namespace PaymentService.Controllers
 
         public PaymentController(ITestService testService)
         {
-            _testService = testService;
-
-            var factory = new ConnectionFactory { HostName = "localhost", Port = 5672, UserName = "myuser", Password = "mypassword" };
-            using var connection = factory.CreateConnection();
-            using var channel = connection.CreateModel();
-            channel.ExchangeDeclare("test", ExchangeType.Topic, true);
-
-            channel.QueueDeclare(queue: "hello",
-                                 durable: true,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
-
-            channel.QueueBind("hello", ExchangeType.Topic, "demo");
-
-            var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += received;
-            channel.BasicConsume("hello", true, consumer);
-            
-
+           _testService = testService;
         }
-
-        private static void received(object? sender, BasicDeliverEventArgs e)
-        {   
-            byte[] body = e.Body.ToArray();
-            string message = Encoding.UTF8.GetString(body);
-            
-        }
-
-
-
-
 
         [HttpGet]
         public async Task<string> Test()
@@ -73,17 +43,6 @@ namespace PaymentService.Controllers
                 return NotFound(null);
             }
         }
-
-        //[HttpGet("/prices")]
-        //public async Task<ActionResult<List<>>> getPrices()
-        //{
-
-
-        //}
-
-
-
-
 
     }
 }

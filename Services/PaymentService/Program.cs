@@ -7,6 +7,8 @@ using PaymentService.Services.Test;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client;
 using System.Text;
+using PaymentService.Models.RabbitMq;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,22 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<ITestService, TestService>();
+
+var rabbitMqSettings = builder.Configuration.GetSection(nameof(RabbitMqSettings)).Get<RabbitMqSettings>();
+builder.Services.AddMassTransit(mt => mt.AddMassTransit(x => {
+    mt.AddConsumer<PaymentConsumer>();
+    x.UsingRabbitMq((ctx, cfg) => {
+        cfg.Host(rabbitMqSettings.Uri, c => {
+            c.Username(rabbitMqSettings.UserName);
+            c.Password(rabbitMqSettings.Password);
+        });
+        cfg.ReceiveEndpoint("payment", c =>
+        {
+            c.ConfigureConsumer<PaymentConsumer>(ctx);
+
+        });
+    });
+}));
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope()) 
@@ -43,29 +61,5 @@ using (var scope = app.Services.CreateScope())
 app.UseAuthorization();
 
 app.MapControllers();
-
-IConnectionFactory factory = new ConnectionFactory { HostName = "localhost", Port = 5672, UserName = "myuser", Password = "mypassword" };
-using (IConnection connection = factory.CreateConnection())
-{
-    IModel channel = connection.CreateModel();
-    channel.ExchangeDeclare("test", ExchangeType.Topic, true);
-
-    channel.QueueDeclare("hello", true, false,false, null);
-
-    channel.QueueBind("hello", "test", "demo");
-
-    var consumer = new EventingBasicConsumer(channel);
-    consumer.Received += received;
-    channel.BasicConsume("hello", true, consumer);
-};
-
-
-static void received(object? sender, BasicDeliverEventArgs e)
-{
-    byte[] body = e.Body.ToArray();
-    string message = Encoding.UTF8.GetString(body);
-
-}
-
 
 app.Run();
