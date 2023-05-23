@@ -16,56 +16,33 @@ namespace PaymentService.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("PaymentService.Models.Test", b =>
+            modelBuilder.Entity("PaymentService.Models.PricingModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("PriceTitle")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Tests");
-                });
-
-            modelBuilder.Entity("PaymentService.Models.test2", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("PriceType")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("testid")
+                    b.Property<string>("ValueDescription")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ValueName")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("testid");
-
-                    b.ToTable("Tests2");
-                });
-
-            modelBuilder.Entity("PaymentService.Models.test2", b =>
-                {
-                    b.HasOne("PaymentService.Models.Test", "Test")
-                        .WithMany("Tests2")
-                        .HasForeignKey("testid");
-
-                    b.Navigation("Test");
-                });
-
-            modelBuilder.Entity("PaymentService.Models.Test", b =>
-                {
-                    b.Navigation("Tests2");
+                    b.ToTable("Pricing");
                 });
 #pragma warning restore 612, 618
         }

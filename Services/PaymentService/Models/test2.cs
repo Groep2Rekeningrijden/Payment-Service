@@ -14,7 +14,7 @@ namespace PaymentService.Models
         [ForeignKey("test")]
         public int? testid { get; set; } = null;
 
-        public Test? Test { get; set; } = null;
+        public PricingModel? Test { get; set; } = null;
 
 
     }

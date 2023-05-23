@@ -29,8 +29,8 @@
 
   <ItemGroup>
     <Folder Include="Data\Interfaces\" />
-    <Folder Include="DTOs\Pricing\" />
-    <Folder Include="Services\Pricing\" />
+    <Folder Include="DTOs\Test\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using PaymentService.DTOs.Test;
+using PaymentService.DTOs.Pricing;
 using PaymentService.Models;
 
 namespace PaymentService
@@ -8,7 +8,14 @@ namespace PaymentService
     {
         public AutoMapperProfile() 
         {
-            CreateMap<Test, GetTestDTO>();
+            CreateMap<PricingModel, GetPricingDTO>();
+            CreateMap<GetPricingDTO, PricingModel>();
+
+            CreateMap<PricingModel, CreatePricingDTO>();
+            CreateMap<CreatePricingDTO, PricingModel>();
+
+            CreateMap<PricingModel, UpdatePricingDTO>();
+            CreateMap<UpdatePricingDTO, PricingModel>();
         }
     }
 }

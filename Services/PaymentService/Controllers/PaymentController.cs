@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using PaymentService.DTOs.Test;
+using PaymentService.DTOs.Pricing;
+using PaymentService.Services.Pricing;
 using PaymentService.Services.Test;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -16,11 +17,11 @@ namespace PaymentService.Controllers
     [ApiController]
     public class PaymentController : ControllerBase
     {
-        private readonly ITestService _testService;
+        private readonly IPriceService _priceService;
 
-        public PaymentController(ITestService testService)
+        public PaymentController(IPriceService priceService)
         {
-           _testService = testService;
+           _priceService = priceService;
         }
 
         [HttpGet]
@@ -29,20 +30,64 @@ namespace PaymentService.Controllers
             return "payment controller 1";
         }
 
-        [HttpGet("/test")]
-        public async Task<ActionResult<List<GetTestDTO>>> Value()
+        [HttpGet("/getPrices")]
+        public async Task<ActionResult<List<GetPricingDTO>>> Value()
         {
             try
             {
-                List<GetTestDTO> response = await _testService.getAllTests();
-                if(response == null) return NotFound(response);
-                return Ok(response);
+                List<GetPricingDTO> res = new List<GetPricingDTO>();
+                res = await _priceService.GetAllPricings();
+                if (res.Count == 0) throw new Exception();
+
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                return NotFound(null);
+                return NotFound();
             }
         }
 
+        [HttpPost("/createPrices")]
+        public async Task<ActionResult<CreatePricingDTO>> CreatePricing(CreatePricingDTO dto)
+        {
+            try
+            {
+                CreatePricingDTO response = await _priceService.CreatePricings(dto);
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPut("/putPrices")]
+        public async Task<ActionResult<GetPricingDTO>> UpdateCar(UpdatePricingDTO dto)
+        {
+            try
+            {
+                GetPricingDTO response = await _priceService.UpdatePricings(dto);
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+
+                return NotFound();
+            }
+        }
+
+        [HttpDelete("/deletePrices")]
+        public async Task<ActionResult> DeleteCar(Guid id)
+        {
+            try
+            {
+                await _priceService.DeletePricings(id);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+        }
     }
 }

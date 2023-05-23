@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PaymentService.Models;
+using System.Reflection.Emit;
 
 namespace PaymentService.Data
 {
@@ -7,11 +8,19 @@ namespace PaymentService.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base (options)
         {
-            
+ 
         }
 
-        public DbSet<Test> Tests { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            Guid id = Guid.NewGuid();
 
-        public DbSet<test2> Tests2 { get; set; }
+
+            //modelBuilder.Entity<Pricing>().HasData(new Pricing { CarTypeId = id, Name = "Benzine", Description = "Benzine auto", PricePerKilometer = 0.11 });
+        }
+
+        public DbSet<PricingModel> Pricing { get; set; }
+
+        //public DbSet<test2> Tests2 { get; set; }
     }
 }

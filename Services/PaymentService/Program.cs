@@ -2,13 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using PaymentService.Data;
 using AutoMapper;
 using PaymentService.Models;
-using PaymentService.DTOs.Test;
+using PaymentService.DTOs.Pricing;
 using PaymentService.Services.Test;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client;
 using System.Text;
 using PaymentService.Models.RabbitMq;
 using MassTransit;
+using PaymentService.Services.Pricing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,13 +18,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(5, 7, 31)));
+    //options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(5, 7, 31)));
+    options.UseMySql(builder.Configuration.GetConnectionString("MigrationConnection"), new MySqlServerVersion(new Version(5, 7, 31)));
+    //options.UseMySql(builder.Configuration.GetConnectionString("KubernetesConnection"), new MySqlServerVersion(new Version(5, 7, 31)));
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<ITestService, TestService>();
+builder.Services.AddScoped<IPriceService, PriceService>();
 
 var rabbitMqSettings = builder.Configuration.GetSection(nameof(RabbitMqSettings)).Get<RabbitMqSettings>();
 builder.Services.AddMassTransit(mt => mt.AddMassTransit(x => {
@@ -46,7 +50,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<DataContext>();
-    //context.Database.Migrate();
+    context.Database.Migrate();
 }
 
     // Configure the HTTP request pipeline.

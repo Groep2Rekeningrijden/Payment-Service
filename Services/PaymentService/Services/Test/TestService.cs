@@ -1,5 +1,5 @@
 ﻿using PaymentService.Data;
-using PaymentService.DTOs.Test;
+using PaymentService.DTOs.Pricing;
 using PaymentService.Models;
 using AutoMapper;
 using System.Collections.Generic;
@@ -20,15 +20,15 @@ namespace PaymentService.Services.Test
             _mapper = mapper;
         }
 
-        public async Task<List<GetTestDTO>> getAllTests()
+        public async Task<List<GetPricingDTO>> getAllTests()
         {
-            List<GetTestDTO> response = new List<GetTestDTO>();
+            List<GetPricingDTO> response = new List<GetPricingDTO>();
                       
             try
             {
-                List<Models.Test> tests = await _dataContext.Tests.ToListAsync();
+                List<Models.PricingModel> tests = await _dataContext.Pricing.ToListAsync();
 
-                response = tests.Select(t => _mapper.Map<Models.Test, GetTestDTO>(t)).ToList();
+                response = tests.Select(t => _mapper.Map<Models.PricingModel, GetPricingDTO>(t)).ToList();
             }
             catch (Exception ex)
             {
