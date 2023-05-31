@@ -15,14 +15,11 @@ namespace PaymentService.Models
         public string PriceType { get; set; }
 
         [Required]
-        public int ValueName { get; set; }
+        public string ValueName { get; set; }
 
         [Required]
-        public string ValueDescription { get; set; }
+        public double ValueDescription { get; set; }
         //public List<test2>? Tests2 { get; set; } = null;
-
-
-
 
     }
 }

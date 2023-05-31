@@ -9,7 +9,7 @@ namespace PaymentService.DTOs.Pricing
         public string PriceTitle { get; set; }
         public string PriceType { get; set; }
         public string ValueName { get; set; }
-        public int ValueDescription { get; set; }
+        public double ValueDescription { get; set; }
 
     }
 }
