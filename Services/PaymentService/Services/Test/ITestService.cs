@@ -1,5 +1,4 @@
-﻿using MassTransit;
-using PaymentService.DTOs.Pricing;
+﻿using PaymentService.DTOs.Pricing;
 using Rekeningrijden.RabbitMq;
 
 namespace PaymentService.Services.Test

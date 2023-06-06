@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PaymentService.Models;
-using System;
-using System.Reflection.Emit;
 
 namespace PaymentService.Data
 {

@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Primitives;
-using System.ComponentModel.DataAnnotations;
-
-namespace PaymentService.DTOs.Pricing
+﻿namespace PaymentService.DTOs.Pricing
 {
     public class GetPricingDTO
     {

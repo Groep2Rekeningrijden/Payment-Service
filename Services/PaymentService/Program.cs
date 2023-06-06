@@ -1,12 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PaymentService.Data;
-using AutoMapper;
-using PaymentService.Models;
-using PaymentService.DTOs.Pricing;
 using PaymentService.Services.Test;
-using RabbitMQ.Client.Events;
-using RabbitMQ.Client;
-using System.Text;
 using PaymentService.Models.RabbitMq;
 using MassTransit;
 using PaymentService.Services.Pricing;
@@ -19,7 +13,8 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<DataContext>(options =>
 {
     //options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(5, 7, 31)));
-    options.UseMySql(builder.Configuration.GetConnectionString("MigrationConnection"), new MySqlServerVersion(new Version(5, 7, 31)));
+    options.UseMySql(builder.Configuration.GetConnectionString("MigrationConnection"),
+        new MySqlServerVersion(new Version(5, 7, 31)));
     //options.UseMySql(builder.Configuration.GetConnectionString("KubernetesConnection"), new MySqlServerVersion(new Version(5, 7, 31)));
 });
 
@@ -31,35 +26,33 @@ builder.Services.AddScoped<ITestService, TestService>();
 builder.Services.AddScoped<IPriceService, PriceService>();
 
 var rabbitMqSettings = builder.Configuration.GetSection(nameof(RabbitMqSettings)).Get<RabbitMqSettings>();
-builder.Services.AddMassTransit(mt => mt.AddMassTransit(x => {
+builder.Services.AddMassTransit(mt => mt.AddMassTransit(x =>
+{
     mt.AddConsumer<PaymentConsumer>();
-    x.UsingRabbitMq((ctx, cfg) => {
-        cfg.Host(rabbitMqSettings.Uri, c => {
+    x.UsingRabbitMq((ctx, cfg) =>
+    {
+        cfg.Host(rabbitMqSettings.Uri, c =>
+        {
             c.Username(rabbitMqSettings.UserName);
             c.Password(rabbitMqSettings.Password);
         });
-        cfg.ReceiveEndpoint("payment", c =>
-        {
-            c.ConfigureConsumer<PaymentConsumer>(ctx);
-
-        });
+        cfg.ReceiveEndpoint("payment", c => { c.ConfigureConsumer<PaymentConsumer>(ctx); });
     });
 }));
 
 var app = builder.Build();
-using (var scope = app.Services.CreateScope()) 
+using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<DataContext>();
     //context.Database.Migrate();
 }
 
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
+// Configure the HTTP request pipeline.
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 //app.UseHttpsRedirection();
 

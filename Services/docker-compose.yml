@@ -1,10 +1,10 @@
 version: '3.4'
 
-name: rekeningrijdend
+name: payment-service
 services:
   paymentservice:
     container_name: paymentservice
-    image: ${DOCKER_REGISTRY-}paymentservice
+    image: fontyssa/payment-service
     ports: 
         - "5050:80"
     build:

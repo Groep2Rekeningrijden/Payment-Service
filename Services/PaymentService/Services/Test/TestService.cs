@@ -1,10 +1,7 @@
 ﻿using PaymentService.Data;
 using PaymentService.DTOs.Pricing;
-using PaymentService.Models;
 using AutoMapper;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using MassTransit;
 using Rekeningrijden.RabbitMq;
 
 namespace PaymentService.Services.Test
