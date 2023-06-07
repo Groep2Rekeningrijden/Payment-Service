@@ -12,10 +12,11 @@ namespace PaymentService.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "highway", PriceType = "modifier", ValueName = "primary", ValueDescription = 1.25 });
+            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "basePrice", PriceType = "base", ValueName = "basePrice", ValueDescription = 0.2 });
+            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "highway", PriceType = "modifier", ValueName = "primary", ValueDescription = 1.1 });
             modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "highway", PriceType = "modifier", ValueName = "secondary", ValueDescription = 1.2 });
-            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "highway", PriceType = "modifier", ValueName = "tertiary", ValueDescription = 1.1 });
-            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "highway", PriceType = "modifier", ValueName = "residential", ValueDescription = 1.2 });
+            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "highway", PriceType = "modifier", ValueName = "tertiary", ValueDescription = 1.3 });
+            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "highway", PriceType = "modifier", ValueName = "residential", ValueDescription = 1.4 });
             modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "boundary", PriceType = "modifier", ValueName = "suburb", ValueDescription = 1.05 });
             modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "boundary", PriceType = "modifier", ValueName = "tertiary", ValueDescription = 1.1 });
             modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "boundary", PriceType = "modifier", ValueName = "administrative", ValueDescription = 1.05 });
@@ -43,9 +44,14 @@ namespace PaymentService.Data
             modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "vehicleClassification", PriceType = "modifier", ValueName = "R", ValueDescription = 1.1 });
             modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "vehicleClassification", PriceType = "modifier", ValueName = "S", ValueDescription = 1.1 });
             modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "vehicleClassification", PriceType = "modifier", ValueName = "G", ValueDescription = 1.1 });
-            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "fuelType", PriceType = "modifier", ValueName = "Brandstof", ValueDescription = 1.2 });
-            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "fuelType", PriceType = "modifier", ValueName = "Diesel", ValueDescription = 1.1 });
-            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "fuelType", PriceType = "modifier", ValueName = "Elektriciteit", ValueDescription = 1.05 });
+            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "fuelType", PriceType = "modifier", ValueName = "Benzine", ValueDescription = 1.25 });
+            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "fuelType", PriceType = "modifier", ValueName = "Diesel", ValueDescription = 1.4 });
+            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "fuelType", PriceType = "modifier", ValueName = "LPG", ValueDescription = 1.2 });
+            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "fuelType", PriceType = "modifier", ValueName = "CNG", ValueDescription = 1.2 });
+            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "fuelType", PriceType = "modifier", ValueName = "Alcohol", ValueDescription = 1.2 });
+            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "fuelType", PriceType = "modifier", ValueName = "LNG", ValueDescription = 1.2 });
+            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "fuelType", PriceType = "modifier", ValueName = "Waterstof", ValueDescription = 1.1 });
+            modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "fuelType", PriceType = "modifier", ValueName = "Elektriciteit", ValueDescription = 1.0 });
             modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "rushPrice", PriceType = "modifier", ValueName = "7", ValueDescription = 1.2 });
             modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "rushPrice", PriceType = "modifier", ValueName = "8", ValueDescription = 1.2 });
             modelBuilder.Entity<PricingModel>().HasData(new PricingModel { Id = Guid.NewGuid(), PriceTitle = "rushPrice", PriceType = "modifier", ValueName = "16", ValueDescription = 1.2 });

@@ -28,8 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Interfaces\" />
-    <Folder Include="DTOs\Test\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 
